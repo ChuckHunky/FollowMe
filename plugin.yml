@@ -1,0 +1,11 @@
+name: FollowMe
+main: uk.co.warmlight.followme.FollowMe
+author: ChuckHunky
+version: 0.1
+description: This is the description
+commands:
+  followme:
+    description: Access functionality of the FollowMe plugin
+    usage: /followme <stuff>
+    permission: followme.*
+    permission-message: You don't have <permission>
