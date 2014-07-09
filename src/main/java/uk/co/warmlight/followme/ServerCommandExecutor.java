@@ -30,7 +30,7 @@ public class ServerCommandExecutor implements CommandExecutor {
 							
 					if (param.equals("new")) {
 									
-						Trail t = new Trail(u, plugin.getMaxTrailLength());
+						Trail t = new Trail(u, plugin.getMaxTrailLength(), p);
 						
 						plugin.addTrailToPlayer(u, t);
 						
@@ -69,6 +69,8 @@ public class ServerCommandExecutor implements CommandExecutor {
 						
 					} else if (param.equals("stop")) {
 						
+						Trail t = plugin.getPlayerTrail(u);
+						t.stopRunnable();
 						plugin.removeTrailFromPlayer(u);
 						sender.sendMessage("Trail removed");
 						return true;

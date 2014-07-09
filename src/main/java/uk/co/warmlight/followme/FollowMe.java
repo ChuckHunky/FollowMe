@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,18 +16,20 @@ import uk.co.warmlight.followme.PlayerMoveListener;
 
 public class FollowMe extends JavaPlugin {
 	
-	private static Integer interval = 3;
-	private static Integer maxTrailLength = 5;
+	private static Integer maxTrailLength = 10;
 	private HashMap<UUID, Trail> playerTrails = new HashMap<UUID, Trail>();
 	private HashMap<String, UUID> playerUUIDCache = new HashMap<String, UUID>();
+
 	
 	public final PlayerMoveListener playerMoveListener = new PlayerMoveListener(this);
+	public final PlayerInOutListener playerInOutListener = new PlayerInOutListener(this);
 	
 	@Override
 	public void onEnable() {
 		
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(playerMoveListener, this);
+		pm.registerEvents(playerInOutListener, this);
 		
 		getCommand("followme").setExecutor(new ServerCommandExecutor(this));
 		
@@ -61,7 +65,8 @@ public class FollowMe extends JavaPlugin {
 		if (this.doesPlayerHaveTrail(u)) {
 			return playerTrails.get(u);
 		} else {
-			Trail t = new Trail(u, this.getMaxTrailLength());
+			Player p = Bukkit.getPlayer(u);
+			Trail t = new Trail(u, this.getMaxTrailLength(), p);
 			this.addTrailToPlayer(u, t);
 			return t;
 		}
